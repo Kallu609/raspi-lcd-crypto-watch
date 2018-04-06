@@ -6,7 +6,7 @@ import urllib2
 from gpiozero import LED
 from threading import Thread
 
-from crypto import CryptoAPI
+from crypto_api import CryptoAPI
 from lcd_controller import LCDController
 from telegram_bot import Telegram
 

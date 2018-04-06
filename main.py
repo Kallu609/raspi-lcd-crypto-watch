@@ -3,6 +3,7 @@ import requests
 import sys
 import time
 import urllib2
+from gpiozero import LED
 from threading import Thread
 
 from crypto import CryptoAPI
@@ -26,18 +27,18 @@ def internet_on():
     except urllib2.URLError as err:
         return False
 
-config = read_config()
-
-while not internet_on():
-    print 'No internet connection. Retrying in 10 seconds.'
-    time.sleep(10)
-
-
 class Main:
     def __init__(self):
         self.crypto_api = CryptoAPI()
         self.telegram   = Telegram(config['telegram_api_key'], self.crypto_api)
         self.lcd        = LCDController()
+
+        self.limits = {
+            'BTC': {
+                'type': 'greater',
+                'value': 6000
+            }
+        }
         
         print 'Retrieving coin list...'
         self.crypto_api.get_coin_list()
@@ -49,10 +50,35 @@ class Main:
         t_price_updater = Thread(target=self.update_prices)
         t_price_updater.start() 
 
+    def notify(self, crypto):
+        print 'Price limit triggered! (%s)' % (crypto)
+        
+        del self.limits[crypto]
+
+        # Flash LED. Will replace with speaker soon
+        led.on()
+        time.sleep(1)
+        led.off()
+
     def update_prices(self):
         while True:
             self.crypto_api.get_prices(self.telegram.watchlist)
-            # print 'Prices updated'
+
+            for crypto in self.limits:
+                if crypto not in self.crypto_api.prices:
+                    continue
+
+                limit = self.limits[crypto]
+                price = self.crypto_api.prices[crypto]
+                
+                if limit['type'] == 'greater':
+                    if price > limit['value']:
+                        self.notify(crypto)
+
+                if limit['type'] == 'less':
+                    if price < limit['value']:
+                        self.notify(crypto)
+
             time.sleep(config['price_update_interval'])
 
     def update_display(self):
@@ -71,7 +97,7 @@ class Main:
                         price = None
 
                         if item in self.crypto_api.prices:
-                            price = '%s%s' % (self.crypto_api.prices[item].values()[0], config['currency_symbol'])
+                            price = '%.2f%s' % (self.crypto_api.prices[item].values()[0], config['currency_symbol'])
                         else:
                             price = '-'
                         
@@ -85,6 +111,13 @@ class Main:
             print 'bye!'
             sys.exit()
             return
+
+config = read_config()
+led = LED(8)
+
+while not internet_on():
+    print 'No internet connection. Retrying in 10 seconds.'
+    time.sleep(10)
 
 if __name__ == '__main__':
     Main()

@@ -15,17 +15,15 @@ class Telegram:
         self.dispatcher = self.updater.dispatcher
 
         commands = [
-            CommandHandler('add',       self.add_crypto,     pass_args=True),
-            CommandHandler('remove',    self.remove_crypto,  pass_args=True),
-            CommandHandler('del',       self.remove_crypto,  pass_args=True),
-            CommandHandler('wl',        self.show_watchlist)
+            CommandHandler(['add'],             self.add_crypto,        pass_args=True),
+            CommandHandler(['del', 'remove'],   self.remove_crypto,     pass_args=True),
+            CommandHandler(['wl', 'watchlist'], self.show_watchlist)
         ]
 
         for command in commands:
             self.dispatcher.add_handler(command)
         
         self.updater.start_polling()
-        
         print 'Telegram bot started. Polling for updates...'
 
     def add_crypto(self, bot, update, args):

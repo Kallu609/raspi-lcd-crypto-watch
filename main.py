@@ -77,9 +77,6 @@ class Main:
                         
                         text += '%s: %s\n' % (item, price)
 
-                    # Removes trailing \n
-                    text = text.rstrip()
-
                     self.lcd.clear()
                     self.lcd.message(text)
                     time.sleep(config['display_update_interval'])

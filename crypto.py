@@ -6,6 +6,7 @@ URLS = {
     'pricemulti': 'https://min-api.cryptocompare.com/data/pricemulti'
 }
 
+
 class CryptoAPI:
     def __init__(self):
         self.prices = {}

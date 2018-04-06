@@ -1,5 +1,6 @@
 from Adafruit_CharLCD import Adafruit_CharLCD
 
+
 class LCDController(Adafruit_CharLCD):
     def __init__(self):
         self.pin_rs = 25

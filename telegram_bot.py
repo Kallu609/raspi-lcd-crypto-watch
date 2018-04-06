@@ -98,7 +98,7 @@ class Telegram:
                             (('these cryptos' if len(not_found) > 1 else 'this crypto'),
                             ', '.join(not_found))
 
-            for arcryptog in found:
+            for crypto in found:
                 self.watchlist.remove(crypto)
                 del self.crypto_api.prices[crypto]
         else:

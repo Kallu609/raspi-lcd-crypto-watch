@@ -52,39 +52,37 @@ class Main:
     def update_prices(self):
         while True:
             self.crypto_api.get_prices(self.telegram.watchlist)
-            print 'Prices updated'
-            time.sleep(config['update_interval'])
+            # print 'Prices updated'
+            time.sleep(config['price_update_interval'])
 
     def update_display(self):
         try:
             while True:
-                text = None
-
                 if len(self.telegram.watchlist) == 0:
-                    text = 'Please add\ncrypto'
+                    self.lcd.clear()
+                    self.lcd.message('Please add\ncrypto(s)')
+                    time.sleep(1)
+                    continue
+
+                for chunk in chunks(self.telegram.watchlist, 2):
+                    text = ''
+
+                    for item in chunk:
+                        price = None
+
+                        if item in self.crypto_api.prices:
+                            price = '%s%s' % (self.crypto_api.prices[item].values()[0], config['currency_symbol'])
+                        else:
+                            price = '-'
+                        
+                        text += '%s: %s\n' % (item, price)
+
+                    # Removes trailing \n
+                    text = text.rstrip()
+
                     self.lcd.clear()
                     self.lcd.message(text)
-                    time.sleep(1)
-                else:
-                    for chunk in chunks(self.telegram.watchlist, 2):
-                        text = ''
-
-                        for item in chunk:
-                            price = None
-
-                            if item in self.crypto_api.prices:
-                                price = '%s%s' % (self.crypto_api.prices[item].values()[0], config['currency_symbol'])
-                            else:
-                                price = '-'
-                            
-                            text += '%s: %s\n' % (item, price)
-
-                        # Removes trailing \n
-                        text = text.rstrip()
-
-                        self.lcd.clear()
-                        self.lcd.message(text)
-                        time.sleep(1)
+                    time.sleep(config['display_update_interval'])
 
         except KeyboardInterrupt:
             print 'bye!'

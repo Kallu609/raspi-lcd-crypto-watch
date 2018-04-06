@@ -1,9 +1,6 @@
-import logging
 from telegram.ext import Updater, CommandHandler
 from threading import Thread
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
 
 class Telegram:
     def __init__(self, api_token, crypto_api):

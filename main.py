@@ -5,8 +5,8 @@ import time
 import urllib2
 from threading import Thread
 
-from lcdcontroller import LCDController
 from crypto import CryptoAPI
+from lcd_controller import LCDController
 from telegram_bot import Telegram
 
 def read_config():

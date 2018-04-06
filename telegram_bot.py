@@ -117,3 +117,4 @@ class Telegram:
         else:
             result = 'Currently not watching anything.'
         
+        bot.send_message(chat_id=update.message.chat_id, text=result)

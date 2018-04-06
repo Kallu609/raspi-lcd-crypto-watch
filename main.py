@@ -32,6 +32,7 @@ while not internet_on():
     print 'No internet connection. Retrying in 10 seconds.'
     time.sleep(10)
 
+
 class Main:
     def __init__(self):
         self.crypto_api = CryptoAPI()
@@ -47,7 +48,6 @@ class Main:
 
         t_price_updater = Thread(target=self.update_prices)
         t_price_updater.start() 
-
 
     def update_prices(self):
         while True:

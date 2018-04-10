@@ -1,5 +1,5 @@
 # raspi-lcd-crypto-watch
-Runs 16x2 LCD display to show cryptocurrency prices. Uses Raspberry Pi as platform.
+Runs 16x2 LCD display with Raspberry Pi to show cryptocurrency prices. Controlled through a telegram bot.
 
 
 ## Requirements

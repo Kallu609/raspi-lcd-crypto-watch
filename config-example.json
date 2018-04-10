@@ -2,5 +2,9 @@
     "telegram_api_key" : "FILL THIS WITH YOUR TELEGRAM API KEY",
     "currency_symbol"  : "$",
     "currency"         : "USD",
-    "update_interval"  : 30
+
+    "price_update_interval"   : 30,
+    "display_update_interval" : 3,
+
+    "limits_file": "limits.json"
 }

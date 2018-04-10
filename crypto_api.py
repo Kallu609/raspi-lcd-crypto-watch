@@ -23,11 +23,14 @@ class CryptoAPI:
         return self.prices
 
     def get_coin_list(self):
+        print 'Retrieving coin list...'
         r = requests.get(URLS['coinlist'])
         data = json.loads(r.text)
 
+
         if data['Response'] == 'Success':
             self.coin_list = data['Data']
+            print 'Found %s cryptos' % (len(self.coin_list))
             return self.coin_list
         else:
             raise Exception('Failed to retrieve coin list')

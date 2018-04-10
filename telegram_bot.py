@@ -38,10 +38,10 @@ class Telegram:
             print 'Saved limits to %s' % self.config['limits_file']
 
     def load_limits(self):
-        with open(self.config['limits_file'], 'r') as f:
-            try:
+        try:
+            with open(self.config['limits_file'], 'r') as f:
                 self.limits = json.loads(f.read())
-            except ValueError:
-                self.limits = {}
+        except:
+            self.limits = {}
 
         print 'Read %s limits from %s' % (len(self.limits), self.config['limits_file'])
